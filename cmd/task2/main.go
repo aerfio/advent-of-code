@@ -1,8 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"log"
-	"os"
 
 	"github.com/aerfio/advent-of-code/pkg/input/task2"
 	"github.com/aerfio/advent-of-code/pkg/intcode"
@@ -15,10 +15,10 @@ func main() {
 
 	}
 
-	prog.Run(true)
+	runOpts := intcode.RunOpts{InitialNoun: 2, InitialVerb: 12}
 
-	if err := prog.PrintAll(os.Stdout); err != nil {
-		log.Fatal(err)
-	}
+	prog.Run(&runOpts)
 
+	firstNum := prog.GetOutput()
+	fmt.Println(firstNum)
 }

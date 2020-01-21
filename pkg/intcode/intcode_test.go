@@ -68,7 +68,7 @@ func Test_program_Run(t *testing.T) {
 	type testData struct {
 		in      string
 		out     []int
-		restore bool
+		restore *RunOpts
 	}
 
 	tests := []struct {
@@ -81,7 +81,7 @@ func Test_program_Run(t *testing.T) {
 				out: []int{
 					2, 0, 0, 0, 99,
 				},
-				restore: false,
+				restore: nil,
 			},
 			wantErr: false,
 		},
@@ -89,7 +89,7 @@ func Test_program_Run(t *testing.T) {
 			data: testData{
 				in:      `2,3,0,3,99`,
 				out:     []int{2, 3, 0, 6, 99},
-				restore: false,
+				restore: nil,
 			},
 
 			wantErr: false,
@@ -100,7 +100,7 @@ func Test_program_Run(t *testing.T) {
 				out: []int{
 					2, 4, 4, 5, 99, 9801,
 				},
-				restore: false,
+				restore: nil,
 			},
 			wantErr: false,
 		},
@@ -110,7 +110,7 @@ func Test_program_Run(t *testing.T) {
 				out: []int{
 					30, 1, 1, 4, 2, 5, 6, 0, 99,
 				},
-				restore: false,
+				restore: nil,
 			},
 			wantErr: false,
 		},
@@ -122,7 +122,7 @@ func Test_program_Run(t *testing.T) {
 					2, 3, 11, 0,
 					99, 30, 40, 50,
 				},
-				restore: false,
+				restore: nil,
 			},
 			wantErr: false,
 		},
@@ -130,7 +130,7 @@ func Test_program_Run(t *testing.T) {
 			data: testData{
 				in:      task2.Data,
 				out:     myCaseAnswer,
-				restore: true,
+				restore: &RunOpts{InitialVerb: 12, InitialNoun: 2},
 			},
 			wantErr: false,
 		},

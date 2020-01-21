@@ -1,9 +1,6 @@
 package intcode
 
 import (
-	"bytes"
-	"fmt"
-	"io"
 	"strconv"
 	"strings"
 )
@@ -32,14 +29,19 @@ func parse(code string) ([]int, error) {
 	return parsed, nil
 }
 
-func (p *program) restoreGravityAssistProgram() {
-	(*p).parsed[1] = 12
-	(*p).parsed[2] = 2
+func (p *program) restoreGravityAssistProgram(opts RunOpts) {
+	(*p).parsed[1] = opts.InitialVerb
+	(*p).parsed[2] = opts.InitialNoun
 }
 
-func (p *program) Run(restore bool) {
-	if restore {
-		p.restoreGravityAssistProgram()
+type RunOpts struct {
+	InitialVerb int
+	InitialNoun int
+}
+
+func (p *program) Run(opts *RunOpts) {
+	if opts != nil {
+		p.restoreGravityAssistProgram(*opts)
 	}
 
 	// currPos := 0
@@ -55,21 +57,8 @@ func (p *program) Run(restore bool) {
 	}
 }
 
-func (p program) PrintAll(w io.Writer) error {
-	var b bytes.Buffer
-	for i, data := range p.parsed {
-
-		if i == len(p.parsed)-1 {
-			b.WriteString(fmt.Sprintf("%d", data))
-		} else {
-			b.WriteString(fmt.Sprintf("%d,", data))
-		}
-
-	}
-	if _, err := fmt.Fprintln(w, b.String()); err != nil {
-		return err
-	}
-	return nil
+func (p *program) GetOutput() int {
+	return p.parsed[0]
 }
 
 type opcode int
