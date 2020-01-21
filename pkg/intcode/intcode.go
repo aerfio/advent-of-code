@@ -6,7 +6,8 @@ import (
 )
 
 type program struct {
-	parsed []int
+	parsed  []int
+	initial []int
 }
 
 func New(code string) (*program, error) {
@@ -14,7 +15,7 @@ func New(code string) (*program, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &program{parsed: data}, nil
+	return &program{parsed: data, initial: data}, nil
 }
 
 func parse(code string) ([]int, error) {
@@ -30,8 +31,8 @@ func parse(code string) ([]int, error) {
 }
 
 func (p *program) restoreGravityAssistProgram(opts RunOpts) {
-	(*p).parsed[1] = opts.InitialVerb
-	(*p).parsed[2] = opts.InitialNoun
+	(*p).parsed[1] = opts.InitialNoun
+	(*p).parsed[2] = opts.InitialVerb
 }
 
 type RunOpts struct {
@@ -59,6 +60,10 @@ func (p *program) Run(opts *RunOpts) {
 
 func (p *program) GetOutput() int {
 	return p.parsed[0]
+}
+
+func (p *program) Reset() {
+	(*p).parsed = p.initial
 }
 
 type opcode int

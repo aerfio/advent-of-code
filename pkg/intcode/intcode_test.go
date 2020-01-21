@@ -130,7 +130,7 @@ func Test_program_Run(t *testing.T) {
 			data: testData{
 				in:      task2.Data,
 				out:     myCaseAnswer,
-				restore: &RunOpts{InitialVerb: 12, InitialNoun: 2},
+				restore: &RunOpts{InitialVerb: 2, InitialNoun: 12},
 			},
 			wantErr: false,
 		},
