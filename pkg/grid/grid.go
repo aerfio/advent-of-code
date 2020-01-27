@@ -184,3 +184,42 @@ func FindManhattanDistanceOfNearestPoint(pts []point) int {
 	sort.Ints(distances)
 	return distances[0]
 }
+
+// TODO test me bitch
+func (p path) findDistanceToIntersection(inter point) int {
+	dist := 0
+
+	for i := 0; i < len(p)-1; i++ {
+		firstPoint := p[i]
+		secondPoint := p[i+1]
+		if isBetween := inter.isBetweenTwoPoints(firstPoint, secondPoint); isBetween {
+			dist += firstPoint.manhattanDistance(inter)
+			break
+		}
+		dist += firstPoint.manhattanDistance(secondPoint)
+	}
+	return dist
+}
+
+func (p point) manhattanDistance(next point) int {
+	return abs(p.x-next.x) + abs(p.y-next.y)
+}
+
+func (p point) isBetweenTwoPoints(p1, p2 point) bool {
+	// there could be test for p1==p2==p or something like this, but come on...
+
+	if p1.x < p.x && p.x < p2.x && p.y == p1.y && p.y == p2.y {
+		// p is between p1 and p2 on X axis
+		return true
+	} else if p.x < p1.x && p.x > p2.x && p.y == p1.y && p.y == p2.y {
+		// p is between p1 and p2 on X axis when p1 is on left side of p2
+		return true
+	} else if p1.y < p.y && p.y < p2.y && p.x == p1.x && p.x == p2.x {
+		// p is between p1 and p2 on Y axis
+		return true
+	} else if p.y < p1.y && p.y > p2.y && p.x == p1.x && p.x == p2.x {
+		// p is between p1 and p2 on X axis when p1 is on top of p2
+		return true
+	}
+	return false
+}

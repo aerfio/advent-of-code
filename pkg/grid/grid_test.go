@@ -221,3 +221,153 @@ func Test_getPathBetweenPoints(t *testing.T) {
 		})
 	}
 }
+
+func Test_point_manhattanDistance(t *testing.T) {
+	type fields struct {
+		x int
+		y int
+	}
+	type args struct {
+		next point
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   int
+	}{
+		{
+			name: "second point positive",
+			want: 10,
+			args: args{next: point{x: 5, y: 5}},
+			fields: fields{
+				x: 0,
+				y: 0,
+			},
+		},
+		{
+			name: "second point negative",
+			want: 10,
+			args: args{next: point{x: -5, y: -5}},
+			fields: fields{
+				x: 0,
+				y: 0,
+			},
+		},
+		{
+			name: "all negative",
+			want: 10,
+			args: args{next: point{x: -10, y: -10}},
+			fields: fields{
+				x: -15,
+				y: -15,
+			},
+		},
+		{
+			name: "all negative - reverse order",
+			want: 10,
+			args: args{next: point{x: -15, y: -15}},
+			fields: fields{
+				x: -10,
+				y: -10,
+			},
+		},
+		{
+			name: "all positive",
+			want: 12,
+			args: args{next: point{x: 1, y: 1}},
+			fields: fields{
+				x: 7,
+				y: 7,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := point{
+				x: tt.fields.x,
+				y: tt.fields.y,
+			}
+			if got := p.manhattanDistance(tt.args.next); got != tt.want {
+				t.Errorf("manhattanDistance() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_point_isBetweenTwoPoints(t *testing.T) {
+	type fields struct {
+		x int
+		y int
+	}
+	type args struct {
+		p1 point
+		p2 point
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   bool
+	}{
+		{
+			name: "is between two points on OX axis",
+			want: true,
+			fields: fields{
+				x: 0,
+				y: 0,
+			},
+			args: args{
+				p1: point{x: 5, y: 0},
+				p2: point{x: -5, y: 0},
+			},
+		},
+		{
+			name: "is between two points on OX axis - reversed order",
+			want: true,
+			fields: fields{
+				x: 0,
+				y: 0,
+			},
+			args: args{
+				p1: point{x: -5, y: 0},
+				p2: point{x: 5, y: 0},
+			},
+		},
+		{
+			name: "is between two points on OY axis",
+			want: true,
+			fields: fields{
+				x: 0,
+				y: 0,
+			},
+			args: args{
+				p1: point{x: 0, y: -5},
+				p2: point{x: 0, y: 5},
+			},
+		},
+		{
+			name: "is between two points on OY axis - reversed order",
+			want: true,
+			fields: fields{
+				x: 0,
+				y: 0,
+			},
+			args: args{
+				p1: point{x: 0, y: 5},
+				p2: point{x: 0, y: -5},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := point{
+				x: tt.fields.x,
+				y: tt.fields.y,
+			}
+			if got := p.isBetweenTwoPoints(tt.args.p1, tt.args.p2); got != tt.want {
+				t.Errorf("isBetweenTwoPoints() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
