@@ -15,7 +15,7 @@ func failIfErr(err error) {
 }
 
 func main() {
-	data:=task3.MyData
+	data := task3.MyData
 
 	ms, err := grid.New(data.First)
 	failIfErr(err)

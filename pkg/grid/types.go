@@ -28,5 +28,4 @@ type point struct {
 var tooShortPathErr = errors.New("path should be at least 2 points long")
 var twoSamePointsNextToEachOtherErr = errors.New("two adjacent points should not be the same")
 
-
 type path []point
