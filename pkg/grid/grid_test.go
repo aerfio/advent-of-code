@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/onsi/gomega"
 )
 
 func Test_stringToDir(t *testing.T) {
@@ -98,14 +100,15 @@ func Test_parse(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			gm := gomega.NewGomegaWithT(t)
+
 			got, err := parse(tt.args.arg)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("parse() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("parse() got = %v, want %v", got, tt.want)
-			}
+
+			gm.Expect(got).To(gomega.BeEquivalentTo(tt.want))
 		})
 	}
 }
@@ -124,9 +127,8 @@ func Test_movementSlice_toGrid(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.ms.toCornerPoints(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("toCornerPoints() = %v, want %v", got, tt.want)
-			}
+			gm := gomega.NewGomegaWithT(t)
+			gm.Expect(tt.ms.toCornerPoints()).To(gomega.BeEquivalentTo(tt.want))
 		})
 	}
 }
