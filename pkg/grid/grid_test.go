@@ -130,3 +130,92 @@ func Test_movementSlice_toGrid(t *testing.T) {
 		})
 	}
 }
+
+func Test_getPathBetweenPoints(t *testing.T) {
+	type args struct {
+		p1 point
+		p2 point
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    path
+		wantErr bool
+	}{
+		{
+			name:    "simple - OX",
+			wantErr: false,
+			args: args{
+				p1: point{x: 0, y: 0},
+				p2: point{x: 4, y: 0},
+			},
+			want: path{{x: 1, y: 0}, {x: 2, y: 0}, {x: 3, y: 0}},
+		},
+		{
+			name:    "simple,inverted - OX",
+			wantErr: false,
+			args: args{
+				p1: point{x: 4, y: 0},
+				p2: point{x: 0, y: 0},
+			},
+			want: path{{x: 3, y: 0}, {x: 2, y: 0}, {x: 1, y: 0}},
+		},
+		{
+			name:    "simple - OY",
+			wantErr: false,
+			args: args{
+				p1: point{x: 0, y: 0},
+				p2: point{x: 0, y: 4},
+			},
+			want: path{{x: 0, y: 1}, {x: 0, y: 2}, {x: 0, y: 3}},
+		},
+		{
+			name:    "simple,inverted - OY",
+			wantErr: false,
+			args: args{
+				p1: point{x: 0, y: 4},
+				p2: point{x: 0, y: 0},
+			},
+			want: path{{x: 0, y: 3}, {x: 0, y: 2}, {x: 0, y: 1}},
+		},
+		{
+			name:    "only numbers below zero - OX",
+			wantErr: false,
+			args: args{
+				p1: point{x: -10, y: -10},
+				p2: point{x: -14, y: -10},
+			},
+			want: path{{x: -11, y: -10}, {x: -12, y: -10}, {x: -13, y: -10}},
+		},
+		{
+			name:    "only numbers below zero - OY",
+			wantErr: false,
+			args: args{
+				p1: point{x: -10, y: -10},
+				p2: point{x: -10, y: -14},
+			},
+			want: path{{x: -10, y: -11}, {x: -10, y: -12}, {x: -10, y: -13}},
+		},
+		{
+			name:    "retuns error",
+			wantErr: true,
+			args: args{
+				p1: point{x: 0, y: 0},
+				p2: point{x: 0, y: 0},
+			},
+			want: path{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := getPathBetweenPoints(tt.args.p1, tt.args.p2)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("getPathBetweenPoints() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("getPathBetweenPoints() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
