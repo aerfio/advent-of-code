@@ -159,7 +159,7 @@ func (p path) FindIntersection(next path) []point {
 
 	for _, pt := range p {
 		for _, nextPt := range next {
-			if isCentralPoint(pt) && isCentralPoint(nextPt) {
+			if pt.isCentral() && nextPt.isCentral() {
 				continue
 			}
 
@@ -172,7 +172,7 @@ func (p path) FindIntersection(next path) []point {
 	return out
 }
 
-func isCentralPoint(p point) bool {
+func (p point) isCentral() bool {
 	return p.x == 0 && p.y == 0
 }
 
