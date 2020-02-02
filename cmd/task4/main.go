@@ -23,7 +23,9 @@ func main() {
 	for i := lowerBound; i <= upperBound; i++ {
 		pass, err := secure_container.ConvertToPassword(i)
 		failIfErr(err)
-		if pass.CheckAdjacentRule() && pass.SatisfiesNotDecreasingRule() {
+		adjRule := pass.CheckAdjacentRule()
+		notDecreasingRule:=pass.SatisfiesNotDecreasingRule()
+		if adjRule && notDecreasingRule{
 			numberOfCorrectPasswords += 1
 		}
 	}

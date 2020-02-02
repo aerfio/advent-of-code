@@ -51,14 +51,21 @@ func intToSlice(n int, sequence []int) []int {
 }
 
 func (p Password) CheckAdjacentRule() bool {
-	isSameAdjacent := false
-
-	for i := 0; i < 5; i++ {
-		if p[i] == p[i+1] {
-			isSameAdjacent = true
+	lastDigit := p[0]
+	groupLen := 1
+	for _, digit := range p[1:] {
+		if digit == lastDigit {
+			groupLen += 1
+		} else {
+			if groupLen == 2 {
+				return true
+			}
+			lastDigit = digit
+			groupLen = 1
 		}
+
 	}
-	return isSameAdjacent
+	return groupLen == 2
 }
 
 func (p Password) SatisfiesNotDecreasingRule() bool {
