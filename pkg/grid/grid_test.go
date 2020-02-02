@@ -371,3 +371,32 @@ func Test_point_isBetweenTwoPoints(t *testing.T) {
 		})
 	}
 }
+
+func Test_path_findDistanceToIntersections(t *testing.T) {
+	type args struct {
+		inter []point
+	}
+	tests := []struct {
+		name string
+		p    path
+		args args
+		want map[point]int
+	}{
+		{
+			name: "simple",
+			p:    path{{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 3, y: 0}},
+			args: args{inter: []point{{x: 1, y: 0}, {x: 3, y: 0}}},
+			want: map[point]int{
+				{x: 1, y: 0}: 1,
+				{x: 3, y: 0}: 3,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.p.FindDistanceToIntersections(tt.args.inter); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("FindDistanceToIntersections() = %+v, want %+v", got, tt.want)
+			}
+		})
+	}
+}

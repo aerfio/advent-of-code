@@ -1,6 +1,7 @@
 package grid
 
 import (
+	"math"
 	"sort"
 	"strconv"
 	"strings"
@@ -154,7 +155,7 @@ func (ms movementSlice) GetPath() (path, error) {
 	return out, nil
 }
 
-func (p path) FindIntersection(next path) []point {
+func (p path) FindIntersections(next path) []point {
 	out := make([]point, 0, 0)
 
 	for _, pt := range p {
@@ -186,6 +187,7 @@ func FindManhattanDistanceOfNearestPoint(pts []point) int {
 }
 
 // TODO test me bitch
+// later: nah, tested in production
 func (p path) findDistanceToIntersection(inter point) int {
 	dist := 0
 
@@ -222,4 +224,34 @@ func (p point) isBetweenTwoPoints(p1, p2 point) bool {
 		return true
 	}
 	return false
+}
+
+func (p path) FindDistanceToIntersections(inter []point) map[point]int {
+	out := make(map[point]int, len(inter))
+
+	for i, point := range p {
+		if i == 0 {
+			continue
+		}
+
+		for _, intersectionPoint := range inter {
+			if point.x == intersectionPoint.x && point.y == intersectionPoint.y {
+				out[point] = i
+			}
+		}
+	}
+	return out
+}
+
+func FindDistanceToClosesIntersection(path1, path2 map[point]int) int {
+	min := math.MaxInt64
+
+	for inter1, dist1 := range path1 {
+		for inter2, dist2 := range path2 {
+			if inter1.x == inter2.x && inter1.y == inter2.y && dist1+dist2 < min {
+				min = dist1 + dist2
+			}
+		}
+	}
+	return min
 }

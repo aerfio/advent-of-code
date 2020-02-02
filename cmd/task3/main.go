@@ -27,7 +27,14 @@ func main() {
 	path2, err := ms2.GetPath()
 	failIfErr(err)
 
-	pts := path.FindIntersection(path2)
 
-	fmt.Println(grid.FindManhattanDistanceOfNearestPoint(pts))
+	pts := path.FindIntersections(path2)
+
+	intersectionDist1 := path.FindDistanceToIntersections(pts)
+	intersectionDist2 := path2.FindDistanceToIntersections(pts)
+
+	dist := grid.FindDistanceToClosesIntersection(intersectionDist1, intersectionDist2)
+
+	fmt.Println(dist)
+
 }
