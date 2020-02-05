@@ -18,10 +18,6 @@ func TestPassword_CheckAdjacentRule(t *testing.T) {
 			p:    Password{1, 1, 3, 4, 5, 6},
 			want: true,
 		},
-		{
-			p:    Password{1, 1, 1, 1, 1, 1},
-			want: true,
-		},
 	}
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("Password %v -> %t", tt.p, tt.want), func(t *testing.T) {
